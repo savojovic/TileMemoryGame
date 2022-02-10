@@ -19,7 +19,7 @@ namespace WF_Slagalica
         int START_POS_Y = 39;
         int VERTICAL_SPACE = 206;// Rucno utvrdjen razmak
         int HORIZONTAL_SPACE = 165;
-        int NUM_OF_TILES = 6;
+        int NUM_OF_TILES = Settings.numOfQuestions;
         int NUM_OF_OPEN_TILES = 0;
         string DEFAULT_TILE_IMG_PATH = "C:\\Users\\jsavic\\Documents\\FaxProjects\\HCI\\WF_Slagalica\\WF_Slagalica\\assets\\default\\tile.jpg";
         PictureBox pictureBox1;
@@ -31,8 +31,18 @@ namespace WF_Slagalica
         public Spajalica()
         {
             InitializeComponent();
+            SetSize();
             CreateTiles();
             AssignImagesToTiles();
+        }
+        private void SetSize()
+        {
+            if (Settings.numOfQuestions == 6)
+                Size = new Size(698, 467);
+            else if (Settings.numOfQuestions == 8)
+                Size = new Size(840, 467);
+            else if (Settings.numOfQuestions == 10)
+                Size = new Size(1000,467);
         }
         private void HandleClicks(Object sender, EventArgs e)
         {
@@ -131,6 +141,8 @@ namespace WF_Slagalica
                 }
                 answers.Add(pairOfTiles, file);
                 fileCounter++;
+                if(fileCounter == NUM_OF_TILES/2)
+                    break;
             }
         }
         private void CreateTiles()
@@ -139,7 +151,7 @@ namespace WF_Slagalica
             int y = START_POS_Y;
             int height = 130;
             int width = 110;
-            int numOfCol = 3;
+            int numOfCol = NUM_OF_TILES/2;
           
 
             for (int i = 1; i <= NUM_OF_TILES; i++)

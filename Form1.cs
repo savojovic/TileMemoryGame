@@ -16,7 +16,6 @@ namespace WF_Slagalica
         {
             InitializeComponent();
         }
-
         private void btnStart_Click(object sender, EventArgs e)
         {
             new Spajalica().ShowDialog();
