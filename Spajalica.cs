@@ -74,22 +74,34 @@ namespace WF_Slagalica
             else if (Settings.numOfQuestions == 10)
                 Size = new Size(1000,467);
         }
+        private Tile FindTile(PictureBox pictureBox)
+        {
+            foreach(Tile tile in pictureBoxes)
+            {
+                if (tile.PictureBox == pictureBox)
+                    return tile;
+            }
+            return null;
+        }
         private void HandleClicks(Object sender, EventArgs e)
         {
             if (isStopwatchRunning)
             {
-                if (NUM_OF_OPEN_TILES < 2)
+                Tile tile = FindTile((PictureBox)sender);
+
+
+                if (NUM_OF_OPEN_TILES < 2 && !tile.IsOpen())
                 {
-                    PictureBox pictureBox = (PictureBox)sender;
                     ShowImg(sender, e);
+                    tile.setIsOpen(true);
                     NUM_OF_OPEN_TILES++;
                     if (NUM_OF_OPEN_TILES == 1)
                     {
-                        pictureBox1 = pictureBox;
+                        pictureBox1 = tile.PictureBox;
                     }
                     else
                     {
-                        pictureBox2 = pictureBox;
+                        pictureBox2 = tile.PictureBox;
                     }
                 }
                 else if (NUM_OF_OPEN_TILES == 2)
@@ -97,13 +109,14 @@ namespace WF_Slagalica
                     bool isCorrect = false;
                     if (IsSame())
                     {
-                        //lblScore.Text = (int.Parse(lblScore.Text)+1).ToString();
                         isCorrect = true;
                     }
                     else
                     {
                         pictureBox1.Image = new Bitmap(DEFAULT_TILE_IMG_PATH);
+                        FindTile(pictureBox1).setIsOpen(false);
                         pictureBox2.Image = new Bitmap(DEFAULT_TILE_IMG_PATH);
+                        FindTile(pictureBox2).setIsOpen(false);
                     }
                     pictureBox1 = null;
                     pictureBox2 = null;

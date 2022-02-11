@@ -21,6 +21,7 @@ namespace WF_Slagalica
         }
 
         public bool IsOpen() { return isOpen; }
+        public void setIsOpen(bool isOpen) { this.isOpen = isOpen; }
         public string getPath() { return pathToImg; }
         public PictureBox PictureBox { get { return pictureBox;} }
     }
