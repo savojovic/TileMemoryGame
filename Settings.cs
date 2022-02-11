@@ -9,6 +9,6 @@ namespace WF_Slagalica
     internal class Settings
     {
         public static int numOfQuestions = 6;
-        public static string username;
+        public static string username = "User";
     }
 }

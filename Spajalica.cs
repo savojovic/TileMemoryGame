@@ -3,13 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Forms;
+using Timer = System.Windows.Forms.Timer;
 
 namespace WF_Slagalica
 {
@@ -22,10 +25,15 @@ namespace WF_Slagalica
         int NUM_OF_TILES = Settings.numOfQuestions;
         int NUM_OF_OPEN_TILES = 0;
         string DEFAULT_TILE_IMG_PATH = "C:\\Users\\jsavic\\Documents\\FaxProjects\\HCI\\WF_Slagalica\\WF_Slagalica\\assets\\default\\tile.jpg";
+        bool isStopwatchRunning = false;
+        BackgroundWorker worker = new BackgroundWorker();
+
+        Stopwatch sw = Stopwatch.StartNew();
+
         PictureBox pictureBox1;
         PictureBox pictureBox2;
 
-        List<PictureBox> pictureBoxes = new List<PictureBox>();
+        List<Tile> pictureBoxes = new List<Tile>();
         Hashtable answers = new Hashtable();
 
         public Spajalica()
@@ -34,6 +42,28 @@ namespace WF_Slagalica
             SetSize();
             CreateTiles();
             AssignImagesToTiles();
+            worker.DoWork += PrintStopwatch;
+        }
+        private void PrintStopwatch(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            sw.Reset();
+            sw.Start();
+            while (isStopwatchRunning)
+            {
+                try
+                {
+                    lblScore.Invoke((MethodInvoker)delegate ()
+                    {
+                        lblScore.Text = sw.Elapsed.ToString("mm\\:ss");
+                    });
+                    Thread.Sleep(900);
+                }
+                catch(System.InvalidOperationException ex)
+                {
+
+                }
+                
+            }
         }
         private void SetSize()
         {
@@ -46,39 +76,42 @@ namespace WF_Slagalica
         }
         private void HandleClicks(Object sender, EventArgs e)
         {
-            if (NUM_OF_OPEN_TILES < 2)
+            if (isStopwatchRunning)
             {
-                PictureBox pictureBox = (PictureBox)sender;
-                ShowImg(sender, e);
-                NUM_OF_OPEN_TILES++;
-                if (NUM_OF_OPEN_TILES == 1)
+                if (NUM_OF_OPEN_TILES < 2)
                 {
-                    pictureBox1 = pictureBox;
+                    PictureBox pictureBox = (PictureBox)sender;
+                    ShowImg(sender, e);
+                    NUM_OF_OPEN_TILES++;
+                    if (NUM_OF_OPEN_TILES == 1)
+                    {
+                        pictureBox1 = pictureBox;
+                    }
+                    else
+                    {
+                        pictureBox2 = pictureBox;
+                    }
                 }
-                else
+                else if (NUM_OF_OPEN_TILES == 2)
                 {
-                    pictureBox2 = pictureBox;
+                    bool isCorrect = false;
+                    if (IsSame())
+                    {
+                        //lblScore.Text = (int.Parse(lblScore.Text)+1).ToString();
+                        isCorrect = true;
+                    }
+                    else
+                    {
+                        pictureBox1.Image = new Bitmap(DEFAULT_TILE_IMG_PATH);
+                        pictureBox2.Image = new Bitmap(DEFAULT_TILE_IMG_PATH);
+                    }
+                    pictureBox1 = null;
+                    pictureBox2 = null;
+                    NUM_OF_OPEN_TILES = 0;
+                    if (isCorrect)
+                        HandleClicks(sender, e);
                 }
             }
-            else if(NUM_OF_OPEN_TILES == 2)
-            {
-                bool isCorrect=false;
-                if (IsSame())
-                {
-                    lblScore.Text = (int.Parse(lblScore.Text)+1).ToString();
-                    isCorrect = true;
-                }
-                else
-                {
-                    pictureBox1.Image = new Bitmap(DEFAULT_TILE_IMG_PATH);
-                    pictureBox2.Image = new Bitmap(DEFAULT_TILE_IMG_PATH);
-                }
-                pictureBox1 = null;
-                pictureBox2 = null;
-                NUM_OF_OPEN_TILES = 0;
-                if(isCorrect)
-                    HandleClicks(sender, e);
-            } 
         }
        
         private static void OnTimedEvent(object source, ElapsedEventArgs e)
@@ -93,7 +126,13 @@ namespace WF_Slagalica
         }
         private Point GetPointFromPicBox(PictureBox pictureBox)
         {
-            int tileNum = pictureBoxes.IndexOf(pictureBox);
+            int tileNum=0;
+
+            for (int i = 0; i < pictureBoxes.Count; i++)
+            {
+                if (pictureBoxes[i].PictureBox == pictureBox)
+                    tileNum = i;
+            }
             foreach (Point point in answers.Keys)
             {
                 if (point.X == tileNum || point.Y == tileNum)
@@ -152,7 +191,6 @@ namespace WF_Slagalica
             int height = 130;
             int width = 110;
             int numOfCol = NUM_OF_TILES/2;
-          
 
             for (int i = 1; i <= NUM_OF_TILES; i++)
             {
@@ -164,8 +202,9 @@ namespace WF_Slagalica
                 pb.Margin = new Padding(3,3,3,3);
                 pb.Click += HandleClicks;
 
+
                 this.Controls.Add(pb);
-                pictureBoxes.Add(pb);
+                pictureBoxes.Add(new Tile(pb,false,DEFAULT_TILE_IMG_PATH));
 
                 x += HORIZONTAL_SPACE;
 
@@ -176,15 +215,23 @@ namespace WF_Slagalica
                 }
             }
         }
-       
-        private void button1_Click(object sender, EventArgs e)
+
+        private void btnStart_Click(object sender, EventArgs e)
         {
-            Close();
+            isStopwatchRunning = true;
+            worker.RunWorkerAsync();
+        }
+        private void btnStop_Click(object sender, EventArgs e)
+        {
+            sw.Stop();
+            sw.Reset();
+            btnStart.Enabled = false; 
+            isStopwatchRunning=false;
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void Spajalica_Load(object sender, EventArgs e)
         {
-           
+            lblUsername.Text = Settings.username;
         }
     }
 }
