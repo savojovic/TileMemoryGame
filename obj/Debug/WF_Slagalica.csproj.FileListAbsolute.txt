@@ -11,3 +11,15 @@ C:\Users\jsavic\Documents\FaxProjects\HCI\WF_Slagalica\WF_Slagalica\obj\Debug\WF
 C:\Users\jsavic\Documents\FaxProjects\HCI\WF_Slagalica\WF_Slagalica\obj\Debug\WF_Slagalica.pdb
 C:\Users\jsavic\Documents\FaxProjects\HCI\WF_Slagalica\WF_Slagalica\obj\Debug\WF_Slagalica.SettingsForm.resources
 C:\Users\jsavic\Documents\FaxProjects\HCI\WF_Slagalica\WF_Slagalica\obj\Debug\WF_Slagalica.Spajalica.resources
+C:\Users\Jovo\Desktop\TileMemoryGame\bin\Debug\WF_Slagalica.exe.config
+C:\Users\Jovo\Desktop\TileMemoryGame\bin\Debug\WF_Slagalica.exe
+C:\Users\Jovo\Desktop\TileMemoryGame\bin\Debug\WF_Slagalica.pdb
+C:\Users\Jovo\Desktop\TileMemoryGame\obj\Debug\WF_Slagalica.csproj.AssemblyReference.cache
+C:\Users\Jovo\Desktop\TileMemoryGame\obj\Debug\WF_Slagalica.Form1.resources
+C:\Users\Jovo\Desktop\TileMemoryGame\obj\Debug\WF_Slagalica.Properties.Resources.resources
+C:\Users\Jovo\Desktop\TileMemoryGame\obj\Debug\WF_Slagalica.SettingsForm.resources
+C:\Users\Jovo\Desktop\TileMemoryGame\obj\Debug\WF_Slagalica.Spajalica.resources
+C:\Users\Jovo\Desktop\TileMemoryGame\obj\Debug\WF_Slagalica.csproj.GenerateResource.cache
+C:\Users\Jovo\Desktop\TileMemoryGame\obj\Debug\WF_Slagalica.csproj.CoreCompileInputs.cache
+C:\Users\Jovo\Desktop\TileMemoryGame\obj\Debug\WF_Slagalica.exe
+C:\Users\Jovo\Desktop\TileMemoryGame\obj\Debug\WF_Slagalica.pdb

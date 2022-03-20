@@ -24,7 +24,7 @@ namespace WF_Slagalica
         int HORIZONTAL_SPACE = 165;
         int NUM_OF_TILES = Settings.numOfQuestions;
         int NUM_OF_OPEN_TILES = 0;
-        string DEFAULT_TILE_IMG_PATH = "C:\\Users\\jsavic\\Documents\\FaxProjects\\HCI\\WF_Slagalica\\WF_Slagalica\\assets\\default\\tile.jpg";
+        string DEFAULT_TILE_IMG_PATH = Directory.GetCurrentDirectory() + "\\assets\\default\\tile.jpg";
         bool isStopwatchRunning = false;
         BackgroundWorker worker = new BackgroundWorker();
 
